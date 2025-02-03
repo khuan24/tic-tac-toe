@@ -43,13 +43,19 @@ const gameBoard = (function() {
     }
 
     const placeToken = (coordinate, playerToken) => {
-        const cell = board[coordinate[0]][coordinate[1]]
+        // Validate the input
+        if (coordinate[0] < 0 || coordinate[0] >= board.length || coordinate[1] < 0 || coordinate[1] >= board.length) {
+            console.log("This position is invalid.")
+            return false
+        }
         
+        const cell = board[coordinate[0]][coordinate[1]]
+
         if (cell.isEmpty()) {
             cell.setToken(playerToken)
             return true
         } else {
-            console.log("This position is taken")
+            console.log("This position is taken.")
             return false
         }
     }
