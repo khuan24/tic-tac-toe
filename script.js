@@ -80,8 +80,7 @@ const gameBoard = (function() {
         }
 
         const hasEmptyCell = (board) => {
-            const flatBoard = [].concat(...board.map((row) => row.map((cell) => cell.isEmpty())))
-            return flatBoard.includes(true)
+            return board.flatMap((row) => row.map((cell) => cell.isEmpty())).includes(true)
         }
 
         // Check by row
