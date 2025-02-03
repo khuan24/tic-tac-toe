@@ -1,6 +1,5 @@
 const gameBoard = (function() {
-    const rows = 3
-    const columns = 3
+    const boardLength = 3
     const board = []
 
     function createCell() {
@@ -28,11 +27,12 @@ const gameBoard = (function() {
             isEmpty
         }
     }
-
+    
+    // Create an empty board
     const resetBoard = () => {
-        for (let i=0; i<rows; i++) {
+        for (let i=0; i<boardLength; i++) {
             board[i] = []
-            for (let j=0; j<columns; j++) {
+            for (let j=0; j<boardLength; j++) {
                 board[i].push(createCell())
             }
         }
@@ -78,22 +78,22 @@ const gameBoard = (function() {
             return flatBoard.includes(true)
         }
 
+        // Check by row
         board.forEach(checkLine)
+        // Check by column
         const transposedBoard = board[0].map((_, colIndex) => board.map(row => row[colIndex]))
         transposedBoard.forEach(checkLine)
+        // Check by diagonals
         const diagonals = [board.map((row, i) => row[i]), board.map((row, i) => row[board.length - 1 - i])]
         diagonals.forEach(checkLine)
 
-        
+        // Check for a tie
         if (!gameState.hasWinner && !hasEmptyCell(board)) {
             isGameOver = true
         }
 
         return gameState
     }
-
-    // Initial board construction
-    resetBoard()
 
     return {
         getBoard,
@@ -146,8 +146,8 @@ const gameManager = (function() {
                     console.log("Players have reached a tie.")
                 }
                 
-                gameBoard.resetBoard()
-                printNewRound()
+                resetGame()
+                switchPlayerTurn()
             } else {
                 switchPlayerTurn()
                 printNewRound()
@@ -157,11 +157,11 @@ const gameManager = (function() {
 
     const resetGame = () => {
         gameBoard.resetBoard()
-        activePlayer = players[0]
+        printNewRound()
     }
 
-    // Initial game message
-    printNewRound()
+    // Start a fresh game
+    resetGame()
 
     return {
         getActivePlayer,
