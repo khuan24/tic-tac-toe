@@ -89,7 +89,7 @@ const gameBoard = (function() {
 
         // Check for a tie
         if (!gameState.hasWinner && !hasEmptyCell(board)) {
-            isGameOver = true
+            gameState.isGameOver = true
         }
 
         return gameState
@@ -140,6 +140,7 @@ const gameManager = (function() {
         if (gameBoard.placeToken(position, activePlayer.token)) {
             const gameState = gameBoard.checkWin(activePlayer.token)
             if (gameState.isGameOver) {
+                printNewRound() // displays the final board
                 if (gameState.hasWinner) {
                     console.log(activePlayer.name + " won!")
                 } else {
@@ -147,7 +148,7 @@ const gameManager = (function() {
                 }
                 
                 resetGame()
-                switchPlayerTurn()
+                switchPlayerTurn() // the loser now gets the first turn
             } else {
                 switchPlayerTurn()
                 printNewRound()
@@ -160,12 +161,13 @@ const gameManager = (function() {
         printNewRound()
     }
 
-    // Start a fresh game
-    resetGame()
-
     return {
         getActivePlayer,
-        playRound
+        playRound,
+        resetGame
     }
 })()
+
+// Start a fresh game
+gameManager.resetGame()
 
