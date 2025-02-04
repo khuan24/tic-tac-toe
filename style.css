@@ -1,28 +1,86 @@
+@font-face {
+    font-family: "Road Rage";
+    src: 
+        url(resources/fonts/RoadRage-Regular.woff) format("woff"),
+        url(resources/fonts/RoadRage-Regular.woff2) format("woff2");    
+}
 
+@font-face {
+    font-family: "Rubik Glitch";
+    src: 
+        url(resources/fonts/RubikGlitch-Regular.woff) format("woff"),
+        url(resources/fonts/RubikGlitch-Regular.woff2) format("woff2");    
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font: inherit;
+}
+
+body {
+    --yellow: #FFD541;
+    
+    background-image: url(resources/bg.jpg);
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    color: white;
+    overflow: clip;
+}
+
+.title-screen {
+    display: grid;
+    min-height: 100vh;
+    grid-template-rows: 2fr 1fr;
+    justify-items: center;
+    align-items: center;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+    font-family: "Road Rage";
+    font-size: 4rem;
+    color: white;
+    text-decoration: underline;
+    text-decoration-color: var(--yellow);
+    text-decoration-thickness: 1rem;
+    text-underline-offset: -0.2rem;
+    text-decoration-skip-ink: none;
+    padding: 0.4em;
+    cursor: pointer;
+}
+
+.game-title {
+    font-family: "Rubik Glitch";
+    font-size: 10rem;
+    text-align: center;
+}
 
 .game-container {
     display: grid;
-    
     min-height: 100vh;
     justify-items: center;
     grid-template-rows: 100px 1fr 100px;
+    font-family: "Rubik Glitch";
 }
 
 .board {
     display: grid;
+    gap: 1rem;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    border: solid  3px;
     aspect-ratio: 1 / 1;
 }
 
 .cell {
-    border: solid black 3px;
+    border: solid white 3px;
+    text-decoration: none;
     aspect-ratio: 1 / 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2rem;
+    font-family: inherit;
+    font-size: 5rem;
     cursor: pointer;
 }
 
@@ -31,5 +89,5 @@ button.reset {
 }
 
 .board > .cell:disabled {
-    color: black;
+    color: white;
 }
