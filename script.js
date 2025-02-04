@@ -175,9 +175,9 @@ const gameManager = (function() {
         }
         
         if (gameBoard.placeToken(position, activePlayer.token)) {
-            pubSub.notify("move-made")
             const gameState = gameBoard.checkWin(activePlayer.token)
             if (gameState.isGameOver) {
+                pubSub.notify("move-made")
                 // printNewRound()
                 if (gameState.hasWinner) {
                     gameOver = true
@@ -185,11 +185,15 @@ const gameManager = (function() {
                 } else {
                     resultMessage = "Players have reached a tie."
                 }
+
                 pubSub.notify("game-over", resultMessage)
             } else {
                 switchPlayerTurn()
+                pubSub.notify("move-made")
                 // printNewRound()
             }
+
+            
         }  
     }
 

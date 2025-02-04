@@ -25,6 +25,12 @@
     cursor: pointer;
 }
 
+.game-stats {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .reset {
     display: none;
 }
