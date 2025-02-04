@@ -24,7 +24,6 @@ body {
     background-image: url(resources/bg.jpg);
     font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     color: white;
-    overflow: clip;
 }
 
 /* index.html */
@@ -40,6 +39,7 @@ body {
 .game-title {
     font-family: "Rubik Glitch";
     font-size: 10rem;
+    text-shadow: 5px 5px black;
     text-align: center;
     align-self: end;
 }
