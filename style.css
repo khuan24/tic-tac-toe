@@ -34,3 +34,7 @@
 .reset {
     display: none;
 }
+
+.board > .cell:disabled {
+    color: black;
+}

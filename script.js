@@ -253,6 +253,7 @@ const gameDisplay = (function() {
                 cellBtn.dataset.col = j
 
                 cellBtn.textContent = board[i][j].getToken()
+                cellBtn.disabled = !board[i][j].isEmpty()
 
                 boardDiv.appendChild(cellBtn)
             }
@@ -261,7 +262,6 @@ const gameDisplay = (function() {
 
     const boardClickHandler = (e) => {
         const cell = e.target
-        cell.disabled = true
 
         const row = parseInt(cell.dataset.row)
         const col = parseInt(cell.dataset.col)
