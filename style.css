@@ -22,6 +22,7 @@ body {
     --yellow: #FFD541;
     
     background-image: url(resources/bg.jpg);
+    background-size: cover;
     font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     color: white;
 }
@@ -122,15 +123,37 @@ form > button:hover {
     display: grid;
     min-height: 100vh;
     justify-items: center;
-    grid-template-rows: 100px 1fr 100px;
+    align-items: center;
+    grid-template-rows: 150px 1fr 150px;
+    grid-template-columns: 1fr 2fr 1fr;
     font-family: "Rubik Glitch";
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.player-one, .player-two {
+    grid-row: span 2;
+    align-self: start;
+    text-align: center;
+    font-size: 3rem;
+    text-shadow: 5px 5px black;
+}
+
+.player-token {
+    font-size: 6rem;
+}
+
+.game-prompt {
+    font-size: 3rem;
+    font-family: "Road Rage";
 }
 
 .board {
+    align-self: stretch;
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(3, minmax(0, 1fr));
     aspect-ratio: 1 / 1;
 }
 
@@ -148,6 +171,7 @@ form > button:hover {
 
 button.reset {
     display: none;
+    grid-column: span 3;
 }
 
 .board > .cell:disabled {
