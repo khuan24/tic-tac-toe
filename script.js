@@ -1,3 +1,25 @@
+const pubSub = (function() {
+    const subscribers = {} // { click: [fn1, fn2], hover: [fn3] }
+
+    const subscribe = (event, callback) => {
+        if (!subscribers[event]) {
+            subscribers[event] = []
+        }
+        subscribers[event].push(callback)
+    }
+
+    const notify = (event, data) => {
+        if (subscribers[event]) {
+            subscribers[event].forEach(callback => callback(data))
+        }
+    }
+
+    return {
+        subscribe,
+        notify
+    }
+})();
+
 const gameBoard = (function() {
     const boardLength = 3
     const board = []
@@ -138,7 +160,7 @@ const gameManager = (function() {
             activePlayer = players[0]
         }
     }
-    // might have to remove
+
     // const printNewRound = () => {
     //     gameBoard.printBoard()
     //     console.log(activePlayer.name + "'s turn.")
@@ -153,6 +175,7 @@ const gameManager = (function() {
         }
         
         if (gameBoard.placeToken(position, activePlayer.token)) {
+            pubSub.notify("move-made")
             const gameState = gameBoard.checkWin(activePlayer.token)
             if (gameState.isGameOver) {
                 // printNewRound()
@@ -162,14 +185,17 @@ const gameManager = (function() {
                 } else {
                     resultMessage = "Players have reached a tie."
                 }
-
-                resetGame()
+                pubSub.notify("game-over", resultMessage)
             } else {
                 switchPlayerTurn()
                 // printNewRound()
             }
         }  
     }
+
+    pubSub.subscribe("cell-clicked", ({row, col}) => {
+        playRound([row, col])
+    })
 
     const isGameOver = () => {
         return gameOver
@@ -186,6 +212,8 @@ const gameManager = (function() {
         gameOver = false
         resultMessage = ""
     }
+
+    pubSub.subscribe("request-reset", resetGame)
     
     // printNewRound()
 
@@ -210,13 +238,7 @@ const gameDisplay = (function() {
         const board = gameBoard.getBoard()
         const activePlayer = gameManager.getActivePlayer()
 
-        if (!gameManager.isGameOver()) {
-            turnDiv.textContent = activePlayer.name + "'s turn."
-        } else {
-            turnDiv.textContent = ""
-            resultDiv.textContent = gameManager.getResult()
-            resetBtn.style.display = block
-        }
+        turnDiv.textContent = activePlayer.name + "'s turn."
         
         for(let i=0; i<board.length; i++) {
             for (let j=0; j<board[i].length; j++) {
@@ -240,12 +262,25 @@ const gameDisplay = (function() {
         const row = parseInt(cell.dataset.row)
         const col = parseInt(cell.dataset.col)
 
-        gameManager.playRound([row, col])
-        updateDisplay()
+        pubSub.notify("cell-clicked", {row, col})
     }
-
     boardDiv.addEventListener("click", boardClickHandler)
-    resetBtn.addEventListener("click", gameManager.resetGame())
+
+    resetBtn.addEventListener("click", () => {
+        pubSub.notify("request-reset")
+    })
+
+    pubSub.subscribe("move-made", updateDisplay)
+    pubSub.subscribe("request-reset", () => {
+        updateDisplay()
+        resetBtn.style.display = "none"
+        resultDiv.textContent = ""
+    })
+    pubSub.subscribe("game-over", (message) => {
+        turnDiv.textContent = ""
+        resultDiv.textContent = message
+        resetBtn.style.display = "block"
+    })
 
     updateDisplay()
 
