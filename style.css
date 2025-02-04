@@ -27,12 +27,21 @@ body {
     overflow: clip;
 }
 
+/* index.html */
+
 .title-screen {
     display: grid;
     min-height: 100vh;
-    grid-template-rows: 2fr 1fr;
+    grid-template-rows: 1fr 1fr;
     justify-items: center;
     align-items: center;
+}
+
+.game-title {
+    font-family: "Rubik Glitch";
+    font-size: 10rem;
+    text-align: center;
+    align-self: end;
 }
 
 button {
@@ -48,13 +57,15 @@ button {
     text-decoration-skip-ink: none;
     padding: 0.4em;
     cursor: pointer;
+    transition: 0.3s;
 }
 
-.game-title {
-    font-family: "Rubik Glitch";
-    font-size: 10rem;
-    text-align: center;
+button:hover {
+    color: var(--yellow);
+    text-decoration-color: white;
 }
+
+/* game.html */
 
 .game-container {
     display: grid;
