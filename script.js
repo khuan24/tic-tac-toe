@@ -100,12 +100,15 @@ const gameBoard = (function() {
         return gameState
     }
 
+    // Initialize the board
+    resetBoard()
+
     return {
         getBoard,
         placeToken,
         resetBoard,
-        checkWin,
-        printBoard
+        printBoard,
+        checkWin
     }
 
 })()
@@ -135,44 +138,118 @@ const gameManager = (function() {
             activePlayer = players[0]
         }
     }
+    // might have to remove
+    // const printNewRound = () => {
+    //     gameBoard.printBoard()
+    //     console.log(activePlayer.name + "'s turn.")
+    // }
 
-    const printNewRound = () => {
-        gameBoard.printBoard()
-        console.log(activePlayer.name + "'s turn.")
-    }
+    let gameOver = false
+    let resultMessage = ""
 
     const playRound = (position) => {
+        if (gameOver) {
+            return
+        }
+        
         if (gameBoard.placeToken(position, activePlayer.token)) {
             const gameState = gameBoard.checkWin(activePlayer.token)
             if (gameState.isGameOver) {
-                printNewRound() // displays the final board
+                // printNewRound()
                 if (gameState.hasWinner) {
-                    console.log(activePlayer.name + " won!")
+                    gameOver = true
+                    resultMessage = activePlayer.name + " won!"
                 } else {
-                    console.log("Players have reached a tie.")
+                    resultMessage = "Players have reached a tie."
                 }
-                
+
                 resetGame()
-                switchPlayerTurn() // the loser now gets the first turn
             } else {
                 switchPlayerTurn()
-                printNewRound()
+                // printNewRound()
             }
         }  
     }
 
+    const isGameOver = () => {
+        return gameOver
+    }
+
+    const getResult = () => {
+        return resultMessage
+    }
+
     const resetGame = () => {
         gameBoard.resetBoard()
-        printNewRound()
+
+        activePlayer = players[0]
+        gameOver = false
+        resultMessage = ""
     }
+    
+    // printNewRound()
 
     return {
         getActivePlayer,
         playRound,
+        isGameOver,
+        getResult,
         resetGame
     }
 })()
 
-// Start a fresh game
-gameManager.resetGame()
+const gameDisplay = (function() {
+    const boardDiv = document.querySelector(".board")
+    const turnDiv = document.querySelector(".turn")
+    const resultDiv = document.querySelector(".result")
+    const resetBtn = document.querySelector(".reset")
 
+    const updateDisplay = () => {
+        boardDiv.innerHTML = ""
+
+        const board = gameBoard.getBoard()
+        const activePlayer = gameManager.getActivePlayer()
+
+        if (!gameManager.isGameOver()) {
+            turnDiv.textContent = activePlayer.name + "'s turn."
+        } else {
+            turnDiv.textContent = ""
+            resultDiv.textContent = gameManager.getResult()
+            resetBtn.style.display = block
+        }
+        
+        for(let i=0; i<board.length; i++) {
+            for (let j=0; j<board[i].length; j++) {
+                const cellBtn = document.createElement("button")
+                cellBtn.classList.add("cell")
+
+                cellBtn.dataset.row = i
+                cellBtn.dataset.col = j
+
+                cellBtn.textContent = board[i][j].getToken()
+
+                boardDiv.appendChild(cellBtn)
+            }
+        }
+    }
+
+    const boardClickHandler = (e) => {
+        const cell = e.target
+        cell.disabled = true
+
+        const row = parseInt(cell.dataset.row)
+        const col = parseInt(cell.dataset.col)
+
+        gameManager.playRound([row, col])
+        updateDisplay()
+    }
+
+    boardDiv.addEventListener("click", boardClickHandler)
+    resetBtn.addEventListener("click", gameManager.resetGame())
+
+    updateDisplay()
+
+    return {
+        updateDisplay
+    }
+})()

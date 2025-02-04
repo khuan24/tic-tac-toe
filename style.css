@@ -1,0 +1,30 @@
+.container {
+    display: grid;
+    
+    min-height: 100vh;
+    justify-items: center;
+    grid-template-rows: 100px 1fr 100px;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    border: solid black 3px;
+    aspect-ratio: 1 / 1;
+}
+
+.cell {
+    border: solid black 3px;
+    aspect-ratio: 1 / 1;
+    background-color: antiquewhite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.reset {
+    display: none;
+}
