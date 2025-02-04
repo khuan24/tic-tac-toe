@@ -1,4 +1,6 @@
-.container {
+
+
+.game-container {
     display: grid;
     
     min-height: 100vh;
@@ -10,14 +12,13 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
-    border: solid black 3px;
+    border: solid  3px;
     aspect-ratio: 1 / 1;
 }
 
 .cell {
     border: solid black 3px;
     aspect-ratio: 1 / 1;
-    background-color: antiquewhite;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,13 +26,7 @@
     cursor: pointer;
 }
 
-.game-stats {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.reset {
+button.reset {
     display: none;
 }
 

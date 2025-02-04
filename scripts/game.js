@@ -1,25 +1,3 @@
-const pubSub = (function() {
-    const subscribers = {} // { click: [fn1, fn2], hover: [fn3] }
-
-    const subscribe = (event, callback) => {
-        if (!subscribers[event]) {
-            subscribers[event] = []
-        }
-        subscribers[event].push(callback)
-    }
-
-    const notify = (event, data) => {
-        if (subscribers[event]) {
-            subscribers[event].forEach(callback => callback(data))
-        }
-    }
-
-    return {
-        subscribe,
-        notify
-    }
-})();
-
 const gameBoard = (function() {
     const boardLength = 3
     const board = []
@@ -82,11 +60,11 @@ const gameBoard = (function() {
         }
     }
 
-    // Will be replaced by a render function in gameDisplay
-    const printBoard = () => {
-        const boardWithTokens = board.map((row) => row.map((cell) => cell.getToken()))
-        console.table(boardWithTokens);
-    }
+    // Print the board inside the console
+    // const printBoard = () => {
+    //     const boardWithTokens = board.map((row) => row.map((cell) => cell.getToken()))
+    //     console.table(boardWithTokens);
+    // }
 
     const checkWin = (playerToken) => {
         const gameState = {
@@ -129,7 +107,7 @@ const gameBoard = (function() {
         getBoard,
         placeToken,
         resetBoard,
-        printBoard,
+        // printBoard,
         checkWin
     }
 
@@ -161,6 +139,7 @@ const gameManager = (function() {
         }
     }
 
+    // Print a new round to the console
     // const printNewRound = () => {
     //     gameBoard.printBoard()
     //     console.log(activePlayer.name + "'s turn.")
@@ -201,14 +180,6 @@ const gameManager = (function() {
         playRound([row, col])
     })
 
-    const isGameOver = () => {
-        return gameOver
-    }
-
-    const getResult = () => {
-        return resultMessage
-    }
-
     const resetGame = () => {
         gameBoard.resetBoard()
 
@@ -223,14 +194,12 @@ const gameManager = (function() {
 
     return {
         getActivePlayer,
-        playRound,
-        isGameOver,
-        getResult,
-        resetGame
+        playRound
     }
 })()
 
 const gameDisplay = (function() {
+    // Retrieved after starting a game
     const boardDiv = document.querySelector(".board")
     const turnDiv = document.querySelector(".turn")
     const resultDiv = document.querySelector(".result")
@@ -268,6 +237,8 @@ const gameDisplay = (function() {
 
         pubSub.notify("cell-clicked", {row, col})
     }
+
+    // -- Execute once game has started
     boardDiv.addEventListener("click", boardClickHandler)
 
     resetBtn.addEventListener("click", () => {
@@ -275,11 +246,13 @@ const gameDisplay = (function() {
     })
 
     pubSub.subscribe("move-made", updateDisplay)
+
     pubSub.subscribe("request-reset", () => {
         updateDisplay()
         resetBtn.style.display = "none"
         resultDiv.textContent = ""
     })
+
     pubSub.subscribe("game-over", (message) => {
         turnDiv.textContent = ""
         resultDiv.textContent = message
@@ -287,6 +260,7 @@ const gameDisplay = (function() {
     })
 
     updateDisplay()
+    // --
 
     return {
         updateDisplay
