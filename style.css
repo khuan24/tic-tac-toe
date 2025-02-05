@@ -137,10 +137,12 @@ form > button:hover {
     text-align: center;
     font-size: 3rem;
     text-shadow: 5px 5px black;
+    margin-top: 2rem;
 }
 
 .player-token {
-    font-size: 6rem;
+    font-size: 7rem;
+    margin-top: 2rem;
 }
 
 .game-prompt {
@@ -172,11 +174,16 @@ form > button:hover {
     min-height: 0;
 }
 
+.cell:hover {
+    background-color: white;
+    color: white;
+}
+
+.cell:disabled:hover {
+    background-color: red;
+}
+
 button.reset {
     display: none;
     grid-column: span 3;
-}
-
-.board > .cell:disabled {
-    color: white;
 }
