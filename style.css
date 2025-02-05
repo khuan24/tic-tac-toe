@@ -165,8 +165,11 @@ form > button:hover {
     justify-content: center;
     align-items: center;
     font-family: inherit;
-    font-size: 5rem;
     cursor: pointer;
+    /* prevent shrinking/growing after clicking in zoomed view */
+    font-size: clamp(2rem, 4vw, 5rem);
+    min-width: 0;
+    min-height: 0;
 }
 
 button.reset {
