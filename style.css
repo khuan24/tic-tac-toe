@@ -102,6 +102,11 @@ input {
     padding: 0.2rem 0.4rem;
     border-radius: 5px;
     border: solid 3px black;
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--yellow);
 }
 
 form > button {
