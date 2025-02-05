@@ -183,7 +183,8 @@ form > button:hover {
     background-color: red;
 }
 
-button.reset {
-    display: none;
+div.buttons {
     grid-column: span 3;
+    display: flex;
 }
+

@@ -199,11 +199,11 @@ const gameManager = (function() {
 })()
 
 const gameDisplay = (function() {
-    // Retrieved after starting a game
     const boardDiv = document.querySelector(".board")
     const turnDiv = document.querySelector(".turn")
     const resultDiv = document.querySelector(".result")
     const resetBtn = document.querySelector(".reset")
+    const homeBtn = document.querySelector(".home")
 
     const updateDisplay = () => {
         boardDiv.innerHTML = ""
@@ -238,18 +238,20 @@ const gameDisplay = (function() {
         pubSub.notify("cell-clicked", {row, col})
     }
 
-    // -- Execute once game has started
     boardDiv.addEventListener("click", boardClickHandler)
 
     resetBtn.addEventListener("click", () => {
         pubSub.notify("request-reset")
     })
 
+    homeBtn.addEventListener("click", () => {
+        window.location.href = "./index.html"
+    })
+
     pubSub.subscribe("move-made", updateDisplay)
 
     pubSub.subscribe("request-reset", () => {
         updateDisplay()
-        resetBtn.style.display = "none"
         resultDiv.textContent = ""
     })
 
@@ -260,7 +262,6 @@ const gameDisplay = (function() {
     })
 
     updateDisplay()
-    // --
 
     return {
         updateDisplay
