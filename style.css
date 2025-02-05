@@ -45,6 +45,12 @@ body {
     align-self: end;
 }
 
+.attribution {
+    font-size: 2rem;
+    font-family: "Road rage";
+    text-align: right;
+}
+
 button {
     background-color: transparent;
     border: none;
