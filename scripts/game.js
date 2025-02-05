@@ -130,6 +130,7 @@ const gameManager = (function() {
         const data = JSON.parse(gameSettings)
         players[0].name = data.playerOneName
         players[1].name = data.playerTwoName
+        localStorage.removeItem("gameSettings")
     }
 
     let activePlayer = players[0]
