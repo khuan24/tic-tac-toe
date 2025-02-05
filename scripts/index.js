@@ -3,8 +3,8 @@ const titleScreenManager = (function() {
     const modal = document.querySelector(".modal")
     const playerForm = document.querySelector("form")
     const formCancelBtn = document.querySelector(".cancel")
-    const playerOneName = document.querySelector(".playerOne-name")
-    const playerTwoName = document.querySelector(".playerTwo-name")
+    const playerOneName = document.querySelector("#playerOne-name")
+    const playerTwoName = document.querySelector("#playerTwo-name")
 
     startGameBtn.addEventListener("click", () => {
         modal.showModal()
@@ -15,6 +15,14 @@ const titleScreenManager = (function() {
         playerForm.reset()
     })
 
+    playerForm.addEventListener("submit", () => {
+        const formData = {
+            playerOneName: playerOneName.value,
+            playerTwoName: playerTwoName.value
+        }
 
+        localStorage.setItem("gameSettings", JSON.stringify(formData))
+        window.location.href = ("./game.html")
+    })
 })()
 

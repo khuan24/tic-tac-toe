@@ -125,10 +125,21 @@ const gameManager = (function() {
         }
     ]
 
+    const gameSettings = localStorage.getItem("gameSettings")
+    if (gameSettings) {
+        const data = JSON.parse(gameSettings)
+        players[0].name = data.playerOneName
+        players[1].name = data.playerTwoName
+    }
+
     let activePlayer = players[0]
 
     const getActivePlayer = () => {
         return activePlayer
+    }
+
+    const getPlayerNames = () => {
+        return [players[0].name, players[1].name]
     }
 
     const switchPlayerTurn = () => {
@@ -194,6 +205,7 @@ const gameManager = (function() {
 
     return {
         getActivePlayer,
+        getPlayerNames,
         playRound
     }
 })()
@@ -204,6 +216,11 @@ const gameDisplay = (function() {
     const resultDiv = document.querySelector(".result")
     const resetBtn = document.querySelector(".reset")
     const homeBtn = document.querySelector(".home")
+    const playerOneName = document.querySelector("#p1-name")
+    const playerTwoName = document.querySelector("#p2-name")
+
+    playerOneName.textContent = gameManager.getPlayerNames()[0]
+    playerTwoName.textContent = gameManager.getPlayerNames()[1]
 
     const updateDisplay = () => {
         boardDiv.innerHTML = ""
